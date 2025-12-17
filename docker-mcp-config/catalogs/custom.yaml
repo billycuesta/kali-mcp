@@ -1,0 +1,31 @@
+version: 2
+name: custom
+displayName: Custom MCP Servers
+registry:
+  pentest:
+    description: "Penetration testing tools for authorized security assessments (nmap, nikto, sqlmap, wpscan, dirb, searchsploit)"
+    title: "Pentest Tools"
+    type: server
+    dateAdded: "2025-01-15T00:00:00Z"
+    image: pentest-mcp-server:latest
+    ref: ""
+    readme: ""
+    toolsUrl: ""
+    source: ""
+    upstream: ""
+    icon: ""
+    tools:
+      - name: nmap_scan
+        description: "Scan target with nmap"
+      - name: nikto_scan
+        description: "Scan web server with nikto"
+      - name: sqlmap_test
+        description: "Test for SQL injection"
+      - name: wpscan_scan
+        description: "Scan WordPress site"
+      - name: dirb_scan
+        description: "Scan for hidden directories"
+      - name: searchsploit_search
+        description: "Search exploit database"
+      - name: ping_test
+        description: "Test connectivity"
