@@ -16,12 +16,50 @@ We chose Kali Linux Rolling as the base image because:
 
 ### Security Tools Included
 
-1. **nmap** - Network discovery and security auditing
-2. **nikto** - Web server scanner
-3. **sqlmap** - Automated SQL injection tool
-4. **wpscan** - WordPress security scanner
-5. **dirb** - Web content scanner
-6. **exploitdb** - Exploit database with searchsploit
+**Network & Discovery:**
+1. **nmap** - Network scanning and OS detection
+2. **enum4linux** - SMB/LDAP enumeration
+3. **dnsutils** - DNS tools (dig, nslookup)
+
+**Web Application:**
+4. **nikto** - Web server vulnerability scanner
+5. **sqlmap** - SQL injection testing
+6. **wpscan** - WordPress vulnerability scanner
+7. **dirb** - Web directory brute-force
+8. **gobuster** - DNS/VHOST/directory fuzzing
+9. **ffuf** - High-speed fuzzer
+10. **feroxbuster** - Fast directory scanner
+11. **nuclei** - Template-based vulnerability scanner
+12. **wafw00f** - WAF detection
+13. **zaproxy** - OWASP ZAP scanner
+14. **tplmap** - SSTI/Template injection testing
+
+**AWS Security:**
+15. **aws-cli** - AWS API access
+16. **prowler** - AWS security audit framework
+17. **cloudfox** - AWS cloud intelligence (Bishop Fox)
+18. **pacu** - AWS exploitation framework
+
+**Internal Network & Exploitation:**
+19. **crackmapexec** - SMB/LDAP/WinRM credential testing
+20. **responder** - LLMNR/NBT-NS spoofing
+21. **impacket** - Network protocol libraries
+22. **metasploit-framework** - Exploit framework
+23. **samba-tools** - SMB client tools
+
+**Password Cracking:**
+24. **hashcat** - GPU/CPU password cracking
+25. **john** - Offline password cracker
+
+**SSL/TLS Analysis:**
+26. **testssl.sh** - SSL/TLS security analysis
+
+**Utilities:**
+27. **exploitdb** - Exploit database with searchsploit
+28. **paramspider** - Parameter discovery
+29. **exiftool** - Metadata extraction
+30. **libreoffice** - Office document analysis
+31. **hydra** - Service brute-force (included in framework)
 
 ### Security Model
 
@@ -105,6 +143,171 @@ Basic connectivity test.
 - `count`: Number of packets (default: "4")
 
 **Example:** "Ping test google.com with 10 packets"
+
+## AWS SECURITY TOOLS
+
+### prowler_scan(profile, regions)
+
+Comprehensive AWS security audit using Prowler.
+
+**Parameters:**
+- `profile`: AWS CLI profile name (default: "default")
+- `regions`: Regions to scan (default: "us-east-1")
+
+**Example:** "Run Prowler scan with profile production in us-east-1,eu-west-1"
+
+### cloudfox_aws(profile, operation)
+
+AWS cloud intelligence using CloudFox (Bishop Fox).
+
+**Parameters:**
+- `profile`: AWS CLI profile (default: "default")
+- `operation`: Operation - all, buckets, instances, iam, networking, etc. (default: "all")
+
+**Example:** "CloudFox scan for all AWS resources"
+
+### pacu_scan(command_name)
+
+AWS exploitation framework PACU commands.
+
+**Parameters:**
+- `command_name`: PACU command to execute (default: "whoami")
+
+**Example:** "Run PACU reconnaissance on AWS environment"
+
+## INTERNAL NETWORK TOOLS
+
+### crackmapexec_spray(protocol, targets, username, password)
+
+Credential spraying and SMB/LDAP enumeration.
+
+**Parameters:**
+- `protocol`: Protocol type (smb, ldap, winrm, ssh, etc.) (default: "smb")
+- `targets`: Target IPs/ranges (required)
+- `username`: Username for credentials (optional)
+- `password`: Password for credentials (optional)
+
+**Example:** "Spray credentials across 192.168.1.0/24 using SMB"
+
+### enum4linux_scan(target, user, password)
+
+Enumerate SMB/LDAP services.
+
+**Parameters:**
+- `target`: Target IP/hostname (required)
+- `user`: Username (optional)
+- `password`: Password (optional)
+
+**Example:** "Full enumeration of domain controller at 192.168.1.1"
+
+### responder_listen(interface, duration)
+
+Capture LLMNR/NBT-NS traffic (internal networks).
+
+**Parameters:**
+- `interface`: Network interface (default: "eth0")
+- `duration`: Listen duration in seconds (default: "60")
+
+**Example:** "Listen for LLMNR traffic on eth0 for 5 minutes"
+
+## PASSWORD CRACKING
+
+### hashcat_crack(hashfile, hashtype, wordlist)
+
+Fast GPU/CPU password cracking.
+
+**Parameters:**
+- `hashfile`: Path to hash file (required)
+- `hashtype`: Hash type ID (0=MD5, 1=MD5(Unix), 3=MD5(salt), etc.) (required)
+- `wordlist`: Wordlist path (default: "/usr/share/wordlists/rockyou.txt")
+
+**Example:** "Crack MD5 hashes from hashes.txt"
+
+### john_crack(hashfile, format_type)
+
+Password cracking with John the Ripper.
+
+**Parameters:**
+- `hashfile`: Path to hash file (required)
+- `format_type`: Hash format (auto, md5, sha512, etc.) (default: "auto")
+
+**Example:** "Crack shadow file format with John"
+
+## WEB SCANNING & FUZZING
+
+### nuclei_scan(url, templates)
+
+Template-based vulnerability scanning.
+
+**Parameters:**
+- `url`: Target URL (required)
+- `templates`: Template category (cves, vulnerability, misconfig, etc.) (default: "cves")
+
+**Example:** "Scan with Nuclei CVE templates"
+
+### feroxbuster_scan(url, wordlist)
+
+Fast directory brute-force.
+
+**Parameters:**
+- `url`: Target URL (required)
+- `wordlist`: Custom wordlist path (optional)
+
+**Example:** "Brute-force directories on example.com"
+
+### ffuf_fuzz(url, wordlist, keyword)
+
+High-speed web fuzzer.
+
+**Parameters:**
+- `url`: Target URL with FUZZ placeholder (required)
+- `wordlist`: Custom wordlist (optional)
+- `keyword`: Fuzz keyword (default: "FUZZ")
+
+**Example:** "Fuzz parameters on http://example.com/api?id=FUZZ"
+
+### wafw00f_detect(url)
+
+Detect WAF/IPS/IDS protection.
+
+**Parameters:**
+- `url`: Target URL (required)
+
+**Example:** "Detect WAF protecting example.com"
+
+### gobuster_fuzz(url, wordlist, mode)
+
+Web directory/DNS/VHOST fuzzing.
+
+**Parameters:**
+- `url`: Target URL (required)
+- `wordlist`: Custom wordlist (optional)
+- `mode`: Fuzz mode - dir, dns, vhost (default: "dir")
+
+**Example:** "Find virtual hosts on example.com"
+
+## SSL/TLS ANALYSIS
+
+### testssl_check(target)
+
+Deep SSL/TLS security analysis.
+
+**Parameters:**
+- `target`: Target host:port (required)
+
+**Example:** "Analyze SSL/TLS on example.com:443"
+
+## AWS CLI DIRECT
+
+### aws_cli_command(command, profile)
+
+Execute AWS CLI commands directly.
+
+**Parameters:**
+- `command`: AWS CLI subcommand (s3 ls, ec2 describe-instances, iam list-users, etc.) (required)
+- `profile`: AWS CLI profile (default: "default")
+
+**Example:** "List all S3 buckets with profile production"
 
 ## Input Sanitization
 
