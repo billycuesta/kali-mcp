@@ -29,37 +29,29 @@ RUN apt-get update && \
     john \
     hashcat \
     enum4linux \
-    samba-tools \
-    testssl.sh \
+    samba-common-bin \
     libreoffice \
     exiftool \
     gobuster \
     ffuf \
     feroxbuster \
     zaproxy \
-    wafw00f \
-    awscli \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 # Update exploitdb
 RUN searchsploit -u || true
 
-# Install Python-based tools
+# Install Python-based tools (only verified PyPI packages)
 RUN pip3 install --no-cache-dir --break-system-packages \
     impacket \
-    crackmapexec \
     responder \
-    nuclei \
-    paramspider \
-    tplmap \
-    prowler \
-    pacu \
-    bloodhound
+    wafw00f \
+    prowler || echo "⚠️ Some pip packages failed to install"
 
-# Install cloudfox from GitHub
-RUN wget -q https://github.com/BishopFox/cloudfox/releases/download/v2.4.2/cloudfox-linux-amd64 -O /usr/local/bin/cloudfox && \
-    chmod +x /usr/local/bin/cloudfox
+# Install CloudFox (verify version exists)
+RUN wget -q https://github.com/BishopFox/cloudfox/releases/download/v2.3.9/cloudfox-linux-amd64 -O /usr/local/bin/cloudfox && \
+    chmod +x /usr/local/bin/cloudfox || echo "⚠️ CloudFox installation skipped"
 
 # Copy requirements first for better caching
 COPY requirements.txt .

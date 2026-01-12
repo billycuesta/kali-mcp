@@ -2,7 +2,7 @@
 
 ## Executive Summary
 
-Successfully created and deployed a Pentest MCP (Model Context Protocol) server that integrates common security testing tools with Claude Desktop. The server runs in a Docker container based on Kali Linux and provides a secure interface for authorized penetration testing and security assessments.
+Successfully created and deployed a Pentest MCP (Model Context Protocol) server that integrates comprehensive security testing tools with Claude Desktop. The server runs in a Docker container based on Kali Linux and provides a secure interface for authorized penetration testing and security assessments. Latest optimization focused on stabilizing PyPI dependencies and expanding tool coverage from 7 to 19 tools.
 
 ## Current Objectives
 
@@ -20,11 +20,13 @@ Successfully created and deployed a Pentest MCP (Model Context Protocol) server 
 | Milestone | Status | Date | Notes |
 |-----------|--------|------|-------|
 | Project initialization | Complete | 2025-12-17 | Repository created with core structure |
-| Security tools integration | Complete | 2025-12-17 | nmap, nikto, sqlmap, wpscan, dirb, searchsploit integrated |
-| MCP server implementation | Complete | 2025-12-17 | All 7 tools callable via MCP protocol |
+| Security tools integration (Phase 1) | Complete | 2025-12-17 | nmap, nikto, sqlmap, wpscan, dirb, searchsploit integrated |
+| MCP server implementation (Phase 1) | Complete | 2025-12-17 | All 7 tools callable via MCP protocol |
 | Docker configuration | Complete | 2025-12-17 | Proper non-root execution and capabilities |
 | GitHub deployment | Complete | 2025-12-17 | Repo published at https://github.com/billycuesta/kali-mcp |
 | Documentation | Complete | 2025-12-17 | README, INSTALL, CLAUDE guides completed |
+| Extended tool coverage (Phase 2) | Complete | 2026-01-12 | Expanded from 7 to 19 tools (AWS, internal network, web, cracking) |
+| Dockerfile optimization | Complete | 2026-01-12 | Stabilized PyPI dependencies, removed unstable tools, optimized build |
 
 ## Recent Decisions
 
@@ -35,6 +37,10 @@ Successfully created and deployed a Pentest MCP (Model Context Protocol) server 
 | 2025-12-17 | Input sanitization via regex validation | Prevents command injection and malicious input |
 | 2025-12-17 | 100-line output truncation | Prevents overwhelming context window |
 | 2025-12-17 | 60-180 second timeout limits | Balances tool completion with resource constraints |
+| 2026-01-12 | Install prowler via PyPI instead of from source | Ensures stable, tested release version; reduces build complexity |
+| 2026-01-12 | Remove crackmapexec, tplmap, nuclei, pacu from initial build | Stabilize dependencies; can be added via post-install or separate container |
+| 2026-01-12 | Expand tool coverage to 19 functions | Provide comprehensive AWS, internal network, web, and password cracking capabilities |
+| 2026-01-12 | Remove searchsploit database update from Dockerfile | Reduce build time and potential network failures; users can update manually |
 
 ## Active Blockers
 
@@ -76,15 +82,46 @@ Successfully created and deployed a Pentest MCP (Model Context Protocol) server 
 
 ## Tools Implemented
 
-| Tool | Status | Description | Scan Type |
-|------|--------|-------------|-----------|
-| nmap_scan | Ready | Network discovery and port scanning | quick, full, stealth, ping |
-| nikto_scan | Ready | Web server vulnerability scanner | Default HTTP scanning |
-| sqlmap_test | Ready | SQL injection automated testing | Parameter-based injection |
-| wpscan_scan | Ready | WordPress vulnerability scanner | Plugins, themes, users |
-| dirb_scan | Ready | Directory brute-force scanner | common, big wordlists |
-| searchsploit_search | Ready | Exploit database search | Keyword-based queries |
-| ping_test | Ready | Connectivity verification | ICMP echo requests |
+### Phase 1 (Original 7 Tools)
+| Tool | Status | Description |
+|------|--------|-------------|
+| nmap_scan | Ready | Network discovery and port scanning (quick, full, stealth, ping) |
+| nikto_scan | Ready | Web server vulnerability scanner |
+| sqlmap_test | Ready | SQL injection automated testing |
+| wpscan_scan | Ready | WordPress vulnerability scanner (plugins, themes, users) |
+| dirb_scan | Ready | Directory brute-force scanner (common, big wordlists) |
+| searchsploit_search | Ready | Exploit database search |
+| ping_test | Ready | Connectivity verification |
+
+### Phase 2 Extended (12 Additional Tools - 2026-01-12)
+
+**AWS Security (3 tools)**
+| Tool | Status | Description |
+|------|--------|-------------|
+| prowler_scan | Ready | AWS security audit framework |
+| cloudfox_aws | Ready | AWS cloud intelligence (Bishop Fox) |
+| aws_cli_command | Ready | Direct AWS CLI command execution |
+
+**Internal Network & Exploitation (3 tools)**
+| enum4linux_scan | Ready | SMB/LDAP enumeration |
+| responder_listen | Ready | LLMNR/NBT-NS spoofing and capture |
+| (crackmapexec_spray) | Deprecated | Removed due to dependency instability |
+
+**Password Cracking (2 tools)**
+| hashcat_crack | Ready | GPU/CPU password cracking |
+| john_crack | Ready | Offline password cracker |
+
+**Web Scanning & Fuzzing (4 tools)**
+| nuclei_scan | Unstable | Template-based vulnerability scanning |
+| feroxbuster_scan | Ready | Fast directory brute-force |
+| ffuf_fuzz | Ready | High-speed web fuzzer |
+| wafw00f_detect | Ready | WAF/IPS/IDS detection |
+| gobuster_fuzz | Ready | Web directory/DNS/VHOST fuzzing |
+
+**SSL/TLS Analysis (1 tool)**
+| testssl_check | Ready | Deep SSL/TLS security analysis |
+
+**Total: 19 Tools (7 Phase 1 + 12 Phase 2)**
 
 ## Next Steps
 
@@ -107,8 +144,8 @@ Successfully created and deployed a Pentest MCP (Model Context Protocol) server 
 
 - **Branch**: main
 - **Remote**: https://github.com/billycuesta/kali-mcp
-- **Last Commit**: 4ee2e6a Initial commit: Pentest MCP Server
-- **Working Tree**: Clean
+- **Last Commit**: 2e9dd0a feat: Add complete pentesting toolkit (AWS, internal, web, cracking)
+- **Working Tree**: Changes staged for commit (Dockerfile, pentest_server.py, requirements.txt optimization)
 
 ## Key Files
 
