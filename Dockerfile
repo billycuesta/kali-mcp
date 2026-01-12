@@ -24,7 +24,6 @@ RUN apt-get update && \
     curl \
     wget \
     git \
-    metasploit-framework \
     hydra \
     john \
     hashcat \
@@ -35,12 +34,8 @@ RUN apt-get update && \
     gobuster \
     ffuf \
     feroxbuster \
-    zaproxy \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
-
-# Update exploitdb
-RUN searchsploit -u || true
 
 # Install Python-based tools (only verified PyPI packages)
 RUN pip3 install --no-cache-dir --break-system-packages \
