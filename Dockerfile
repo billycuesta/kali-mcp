@@ -34,6 +34,7 @@ RUN apt-get update && \
     gobuster \
     ffuf \
     feroxbuster \
+    awscli \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -44,9 +45,19 @@ RUN pip3 install --no-cache-dir --break-system-packages \
     wafw00f \
     prowler || echo "⚠️ Some pip packages failed to install"
 
-# Install CloudFox (verify version exists)
-RUN wget -q https://github.com/BishopFox/cloudfox/releases/download/v2.3.9/cloudfox-linux-amd64 -O /usr/local/bin/cloudfox && \
-    chmod +x /usr/local/bin/cloudfox || echo "⚠️ CloudFox installation skipped"
+# Install CloudFox v1.17.0 (latest with ARM64 support)
+RUN ARCH=$(dpkg --print-architecture) && \
+    apt-get update && apt-get install -y unzip && \
+    if [ "$ARCH" = "amd64" ]; then \
+      wget -q https://github.com/BishopFox/cloudfox/releases/download/v1.17.0/cloudfox-linux-amd64.zip -O /tmp/cloudfox.zip; \
+    elif [ "$ARCH" = "arm64" ]; then \
+      wget -q https://github.com/BishopFox/cloudfox/releases/download/v1.17.0/cloudfox-linux-arm64.zip -O /tmp/cloudfox.zip; \
+    fi && \
+    unzip -o /tmp/cloudfox.zip -d /tmp && \
+    mv /tmp/cloudfox/cloudfox /usr/local/bin/cloudfox && \
+    chmod +x /usr/local/bin/cloudfox && \
+    rm -rf /tmp/cloudfox /tmp/cloudfox.zip && \
+    apt-get clean
 
 # Copy requirements first for better caching
 COPY requirements.txt .

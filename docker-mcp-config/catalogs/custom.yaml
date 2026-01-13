@@ -1,13 +1,27 @@
-version: 2
+version: 3
 name: custom
 displayName: Custom MCP Servers
 registry:
-  pentest:
-    description: "Penetration testing tools for authorized security assessments (nmap, nikto, sqlmap, wpscan, dirb, searchsploit)"
-    title: "Pentest Tools"
+  kali:
+    description: "Full Kali Linux penetration testing toolkit with AWS security tools (cloudfox, prowler, aws-cli)"
+    title: "Kali Security Tools"
     type: server
-    dateAdded: "2025-01-15T00:00:00Z"
-    image: pentest-mcp-server:latest
+    dateAdded: "2026-01-13T00:00:00Z"
+    image: kali-mcp:latest
+    volumes:
+      - "/Users/gcuesta/Projects/clientes/tulotero-mx-pci/credentials:/root/.aws/credentials:ro"
+    env:
+      - name: "AWS_DEFAULT_REGION"
+        value: "us-east-1"
+    config:
+      - name: "kali"
+        description: "Kali security tools configuration"
+        type: "object"
+        properties:
+          aws_credentials_file:
+            type: "string"
+            description: "Path to AWS credentials file (e.g., /path/to/project/credentials)"
+        required: ["aws_credentials_file"]
     ref: ""
     readme: ""
     toolsUrl: ""
@@ -15,17 +29,57 @@ registry:
     upstream: ""
     icon: ""
     tools:
+      # Network Scanning
       - name: nmap_scan
-        description: "Scan target with nmap"
-      - name: nikto_scan
-        description: "Scan web server with nikto"
-      - name: sqlmap_test
-        description: "Test for SQL injection"
-      - name: wpscan_scan
-        description: "Scan WordPress site"
-      - name: dirb_scan
-        description: "Scan for hidden directories"
-      - name: searchsploit_search
-        description: "Search exploit database"
+        description: "Scan target with nmap (quick/full/stealth/ping)"
       - name: ping_test
-        description: "Test connectivity"
+        description: "Test connectivity with ICMP"
+      # Web Scanning
+      - name: nikto_scan
+        description: "Scan web server for vulnerabilities"
+      - name: dirb_scan
+        description: "Brute-force directories"
+      - name: feroxbuster_scan
+        description: "Fast directory brute-force"
+      - name: gobuster_fuzz
+        description: "Web fuzzing (dir/dns/vhost)"
+      - name: ffuf_fuzz
+        description: "Parameter fuzzing"
+      - name: wafw00f_detect
+        description: "Detect WAF/IPS/IDS"
+      # Vulnerability Testing
+      - name: sqlmap_test
+        description: "SQL injection testing"
+      - name: wpscan_scan
+        description: "WordPress vulnerability scan"
+      - name: searchsploit_search
+        description: "Search ExploitDB"
+      # SSL/TLS
+      - name: testssl_check
+        description: "Deep SSL/TLS analysis"
+      # AWS Security
+      - name: cloudfox_aws
+        description: "AWS cloud intelligence (buckets, instances, iam)"
+      - name: prowler_scan
+        description: "AWS security assessment"
+      - name: aws_cli_command
+        description: "Direct AWS CLI commands"
+      # Internal Network
+      - name: enum4linux_scan
+        description: "Enumerate SMB/LDAP"
+      - name: responder_listen
+        description: "Capture LLMNR/NBT-NS traffic"
+      # Password Cracking
+      - name: hashcat_crack
+        description: "Crack hashes with hashcat"
+      - name: john_crack
+        description: "Crack passwords with John the Ripper"
+    prompts: 0
+    resources: {}
+    metadata:
+      category: security
+      tags:
+        - kali
+        - pentest
+        - security
+        - aws
